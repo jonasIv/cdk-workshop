@@ -2,6 +2,7 @@ import path = require('path');
 import lambda = require('@aws-cdk/aws-lambda');
 import cdk = require('@aws-cdk/core');
 import apigw = require('@aws-cdk/aws-apigateway');
+import { TableViewer } from 'cdk-dynamo-table-viewer';
 import { HitCounter } from './hitcounter';
 
 export class CdkWorkshopStack extends cdk.Stack {
@@ -21,5 +22,12 @@ export class CdkWorkshopStack extends cdk.Stack {
     new apigw.LambdaRestApi(this, 'Endpoint', {
       handler: helloWithCounter.handler,
     });
+
+    new TableViewer(this, 'HitCounter TableViewer', {
+      table: helloWithCounter.table,
+      title: 'Hit Counter',
+      sortBy: '-hits',
+    });
+
   }
 }
