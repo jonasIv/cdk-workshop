@@ -16,10 +16,12 @@ export class HitCounter extends cdk.Construct {
   constructor(scope: cdk.Construct, id: string, props: HitCounterProps) {
     super(scope, id);
 
+    // DynamoDB table
     this.table = new dynamodb.Table(this, 'Hits', {
       partitionKey: { name: 'path', type: dynamodb.AttributeType.STRING }
     });
 
+    // Lambda for counting
     this.handler = new lambda.Function(this, 'HitCounterHandler', {
       runtime: lambda.Runtime.NODEJS_12_X,
       handler: 'hitcounter.handler',
